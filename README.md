@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cortex Web
 
-## Getting Started
+A Next.js webapp that renders a multi-domain markdown wiki ("Cortex") as a browsable, searchable site.
 
-First, run the development server:
+The wiki content lives in a separate Obsidian vault (`/Users/ribo/Documents/Obsidian/Cortex/`) where it's maintained by Claude Code under an LLM-driven knowledge-base schema. This repo only renders it.
+
+## Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run sync          # pull latest content from the Obsidian vault
+npm run build         # generates static pages + Pagefind search index
+npm run start         # serve at localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For local iteration with hot reload, `npm run dev` — but search won't work in dev mode (Pagefind is a post-build step).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Common workflows
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Update content from the vault:**
+```bash
+npm run sync
+git add content/ && git commit -m "content: <summary>" && git push
+```
 
-## Learn More
+**Add a new domain:**
+1. Create the vault folder + content
+2. `mkdir content/domains/<name>` and add `meta.json` (`{ name, description, color }`)
+3. Sync, commit, push — routing handles it automatically
 
-To learn more about Next.js, take a look at the following resources:
+**Deploy to Vercel:**
+```bash
+vercel login
+vercel --prod
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+After first deploy, link the GitHub repo in Vercel for auto-deploys.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Architecture
 
-## Deploy on Vercel
+- **Next.js 16 App Router** with full static generation (`generateStaticParams`)
+- **Pagefind** for client-side search (built post-compile)
+- **shadcn/ui** + **Tailwind v4** for components
+- **`next-mdx-remote/rsc`** for markdown rendering
+- **AI Ask** — stubbed; gated behind `NEXT_PUBLIC_ENABLE_ASK=true`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [`CLAUDE.md`](./CLAUDE.md) for full project context, file layout, gotchas, and the AI Ask implementation plan.
