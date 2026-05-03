@@ -4,24 +4,29 @@ A Next.js webapp that renders a multi-domain markdown wiki ("Cortex") as a brows
 
 The wiki content lives in a separate Obsidian vault (`/Users/ribo/Documents/Obsidian/Cortex/`) where it's maintained by Claude Code under an LLM-driven knowledge-base schema. This repo only renders it.
 
-## Quick start
+## Build & run
 
 ```bash
 npm install
-npm run sync          # pull latest content from the Obsidian vault
-npm run build         # generates static pages + Pagefind search index
+npm run build         # prebuild → next build → Pagefind index
 npm run start         # serve at localhost:3000
 ```
 
-For local iteration with hot reload, `npm run dev` — but search won't work in dev mode (Pagefind is a post-build step).
+For hot-reload dev: `npm run dev` — search won't work (Pagefind is a post-build step).
+
+## Sync content from the vault
+
+Wiki content lives in the Obsidian vault at `/Users/ribo/Documents/Obsidian/Cortex/`. After editing there:
+
+```bash
+npm run sync                                                    # rsync vault → content/
+git add content/ && git commit -m "content: <summary>"
+git push                                                        # triggers Vercel auto-deploy
+```
+
+Never edit `content/` by hand — it will be overwritten on next sync.
 
 ## Common workflows
-
-**Update content from the vault:**
-```bash
-npm run sync
-git add content/ && git commit -m "content: <summary>" && git push
-```
 
 **Add a new domain:**
 1. Create the vault folder + content
