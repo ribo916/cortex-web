@@ -45,3 +45,6 @@ next-env.d.ts
 
 # claude settings synced from vault
 content/**/.claude
+
+# claude code session data
+.claude/

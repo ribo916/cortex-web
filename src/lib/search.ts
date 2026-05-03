@@ -28,10 +28,14 @@ async function getPagefind(): Promise<PagefindModule | null> {
 
   return new Promise((resolve) => {
     const script = document.createElement('script')
-    script.src = '/pagefind/pagefind.js'
     script.type = 'module'
-    script.onload = () => resolve(window.pagefind ?? null)
-    script.onerror = () => resolve(null)
+    script.textContent = `
+      import * as pf from '/pagefind/pagefind.js';
+      window.pagefind = pf;
+      await pf.preload('');
+      window.dispatchEvent(new CustomEvent('pagefind-ready'));
+    `
+    window.addEventListener('pagefind-ready', () => resolve(window.pagefind ?? null), { once: true })
     document.head.appendChild(script)
   })
 }
@@ -64,7 +68,7 @@ export async function search(query: string, filters: SearchFilters = {}): Promis
         id: r.id,
         title: data.meta?.title ?? 'Untitled',
         excerpt: data.excerpt,
-        url: data.url,
+        url: data.url.replace(/\.html$/, ''),
         filters: data.filters,
       }
     })

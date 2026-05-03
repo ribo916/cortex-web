@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { SearchTrigger } from '@/components/search/SearchTrigger'
+import { ThemeToggle } from './ThemeToggle'
 
 export function SiteHeader() {
   return (
@@ -9,6 +10,7 @@ export function SiteHeader() {
           Cortex
         </Link>
         <div className="flex-1" />
+        <ThemeToggle />
         <SearchTrigger />
       </div>
     </header>
