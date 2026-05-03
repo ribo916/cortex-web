@@ -1,0 +1,11 @@
+{
+  "domains": [
+    {
+      "slug": "polly-api",
+      "name": "Polly API",
+      "description": "Product and pricing engine for mortgage lending — API reference, integration patterns, and lock management workflows.",
+      "color": "#2563eb"
+    }
+  ],
+  "generated": "2026-05-03T06:36:05.156Z"
+}
