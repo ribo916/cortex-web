@@ -1,11 +1,17 @@
 {
   "domains": [
     {
+      "slug": "ai-reference",
+      "name": "AI Reference",
+      "description": "LLM concepts, model capabilities, prompt engineering patterns, and AI tooling reference.",
+      "color": "#7c3aed"
+    },
+    {
       "slug": "polly-api",
       "name": "Polly API",
       "description": "Product and pricing engine for mortgage lending — API reference, integration patterns, and lock management workflows.",
       "color": "#2563eb"
     }
   ],
-  "generated": "2026-05-03T15:15:21.157Z"
+  "generated": "2026-05-05T03:03:40.141Z"
 }
